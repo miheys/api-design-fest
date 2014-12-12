@@ -2,7 +2,7 @@ package org.netbeans.apifest.booleval;
 
 
 import junit.framework.TestCase;
-import org.netbeans.apifest.boolcircuit.Circuit;
+import org.netbeans.apifest.boolcircuitday2.Circuit;
 
 // BEGIN: apitest.day2.RealTest
 
@@ -36,14 +36,10 @@ import org.netbeans.apifest.boolcircuit.Circuit;
  * the tests bellow which you are supposed to implement.
  */
 public class RealTest extends TestCase {
-    static {
-        // your code shall run without any permissions
-    }
 
     public RealTest(String testName) {
         super(testName);
     }
-
 
     /**
      * First of all create a circuit which will evaluate
@@ -73,25 +69,21 @@ public class RealTest extends TestCase {
         circuit.setInput("x2", true);
         assertTrue(circuit.evaluate());
 
-        // TODO: MVO: add double support
-//        circuit.setInput("x1", 0.0);
-//        circuit.setInput("x2", 1.0);
-//        assertEquals(1.0, circuit.evaluate());
-//
-//        circuit.setInput("x1", 0.5);
-//        circuit.setInput("x2", 0.5);
-//        assertEquals(0.625, circuit.evaluate());
-//
-//        circuit.setInput("x1", 0.0);
-//        circuit.setInput("x2", 2.0);
-//        try {
-//            circuit.evaluate();
-//            fail();
-//        } catch (Exception e) {
-//            // ok
-//        }
+        circuit.setInput("x1", 0.0);
+        circuit.setInput("x2", 1.0);
+        assertEquals(1.0, circuit.evaluateDouble());
 
-        fail("testX1andX2orNotX1");
+        circuit.setInput("x1", 0.5);
+        circuit.setInput("x2", 0.5);
+        assertEquals(0.625, circuit.evaluateDouble());
+
+        circuit.setInput("x1", 0.0);
+        try {
+            circuit.setInput("x2", 2.0);
+            fail();
+        } catch (Exception e) {
+            // ok
+        }
     }
 
     /**
@@ -103,7 +95,14 @@ public class RealTest extends TestCase {
      * thrown indicating that this is improper use of the circuit.
      */
     public void testImproperUseOfTheCircuit() {
-        fail("testImproperUseOfTheCircuit");
+        Circuit circuit = new Circuit("x1 x1 and");
+        circuit.setInput("x1", 0.3);
+        try {
+            circuit.setInput("x1", 0.5);
+            fail();
+        } catch(Exception e) {
+            // ok
+        }
     }
 
     /**

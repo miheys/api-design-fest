@@ -17,7 +17,7 @@
  * Microsystems, Inc. All Rights Reserved.
  */
 
-package org.netbeans.apifest.boolcircuit;
+package org.netbeans.apifest.boolcircuitday2;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -29,24 +29,24 @@ import java.util.*;
  */
 public final class Circuit {
 
-    private List<BooleanInput> inputs = Lists.newArrayList();
+    private List<DoubleInput> inputs = Lists.newArrayList();
 
-    private Stack<Expression> stack = new Stack<>();
+    private Stack<DoubleExpression> stack = new Stack<>();
 
-    private Map<String, BooleanInput> variables = Maps.newHashMap();
+    private Map<String, DoubleInput> variables = Maps.newHashMap();
 
-    private Expression expression;
+    private DoubleExpression expression;
 
     public Circuit(String expressionString) {
         String[] atoms = expressionString.split("\\s");
         for (String atom : atoms) {
-            Expression expression = DefaultExpressionFactory.create(atom, stack);
+            DoubleExpression expression = DefaultExpressionFactory.create(atom, stack);
             if (expression != null) {
                 stack.push(expression);
             } else {
-                BooleanInput input = variables.get(atom);
+                DoubleInput input = variables.get(atom);
                 if (input == null) {
-                    input = new BooleanInput();
+                    input = new DoubleInput();
                     variables.put(atom, input);
                 }
                 inputs.add(input);
@@ -61,19 +61,33 @@ public final class Circuit {
         String errorMessage = String.format("Circuit contains %s inputs, but was provided %s", inputs.size(), values.length);
         Preconditions.checkArgument(inputs.size() == values.length, errorMessage);
         int i = 0;
-        for (BooleanInput input : inputs) {
-            input.setValue(values[i++]);
+        for (DoubleInput input : inputs) {
+            input.setValue(values[i++] ? 1 : 0);
         }
     }
 
     public void setInput(String variableName, boolean value) {
+        setInput(variableName, value ? 1 : 0);
+    }
+
+    public void setInput(String variableName, double value) {
         String errorMessage = String.format("There is no such variable as %s among %s.", variableName, variables.keySet());
         Preconditions.checkArgument(variables.containsKey(variableName), errorMessage);
+        Preconditions.checkArgument(value >= 0 && value <= 1, "Only values [0.0..1.1] are allowed");
+        Preconditions.checkState(!variables.get(variableName).isSet(), String.format("Variable %s has already been set", variableName));
         variables.get(variableName).setValue(value);
     }
 
     public boolean evaluate() {
-        return expression.evaluate();
+        return DoubleInput.toBoolean(evaluateDouble());
+    }
+
+    public double evaluateDouble() {
+        double result = expression.evaluateDouble();
+        for (DoubleInput input : variables.values()){
+            input.reset();
+        }
+        return result;
     }
 
 }

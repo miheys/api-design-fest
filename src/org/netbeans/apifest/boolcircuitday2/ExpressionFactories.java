@@ -1,4 +1,4 @@
-package org.netbeans.apifest.boolcircuit;
+package org.netbeans.apifest.boolcircuitday2;
 
 import com.google.common.collect.Sets;
 

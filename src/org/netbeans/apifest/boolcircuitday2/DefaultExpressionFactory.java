@@ -1,4 +1,4 @@
-package org.netbeans.apifest.boolcircuit;
+package org.netbeans.apifest.boolcircuitday2;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ class DefaultExpressionFactory {
         keywords.add("not");
     }
 
-    public static Expression create(String operation, Stack<Expression> argumentStack) {
+    public static DoubleExpression create(String operation, Stack<DoubleExpression> argumentStack) {
         if ("and".equals(operation)) {
             return new AndExpression(argumentStack.pop(), argumentStack.pop());
         } else if ("or".equals(operation)) {
@@ -27,9 +27,9 @@ class DefaultExpressionFactory {
         return createCustomExpression(operation, argumentStack);
     }
 
-    private static Expression createCustomExpression(String operation, Stack<Expression> argumentStack) {
+    private static DoubleExpression createCustomExpression(String operation, Stack<DoubleExpression> argumentStack) {
         for (ExpressionFactory expressionFactory : ExpressionFactories.get()) {
-            Expression expression = expressionFactory.create(operation, argumentStack);
+            DoubleExpression expression = expressionFactory.createDouble(operation, argumentStack);
             if (expression != null) {
                 return expression;
             }
