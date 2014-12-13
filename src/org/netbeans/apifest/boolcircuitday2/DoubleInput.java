@@ -1,9 +1,13 @@
 package org.netbeans.apifest.boolcircuitday2;
 
 import com.google.common.base.Preconditions;
+import org.netbeans.apifest.boolcircuitday2.api.BooleanExpression;
+import org.netbeans.apifest.boolcircuitday2.api.DoubleExpression;
+
+import static org.netbeans.apifest.boolcircuitday2.api.ConvertUtils.toBoolean;
 
 /**
- * Created by John on 2014.12.09..
+ * Created by Mihails Volkovs on 2014.12.09..
  */
 class DoubleInput implements BooleanExpression, DoubleExpression {
 
@@ -24,20 +28,16 @@ class DoubleInput implements BooleanExpression, DoubleExpression {
         return value;
     }
 
-    protected static boolean toBoolean(Double value) {
-        if (value.equals(1.0)) {
-            return true;
-        } else if (value.equals(0.0)) {
-            return false;
-        }
-        throw new IllegalStateException("Double value was set as input, can't evaluate boolean");
-    }
-
     protected boolean isSet() {
         return value != null;
     }
 
     public void reset() {
         value = null;
+    }
+
+    @Override
+    public String toString() {
+        return "" + value;
     }
 }

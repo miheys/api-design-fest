@@ -1,7 +1,8 @@
 package org.netbeans.apifest.booleval;
 
-import org.netbeans.apifest.boolcircuitday2.Circuit;
 import junit.framework.TestCase;
+import org.netbeans.apifest.boolcircuitday2.api.Circuit;
+import org.netbeans.apifest.boolcircuitday2.api.CircuitFactory;
 
 // BEGIN: apifest.EvalTest
 
@@ -44,7 +45,7 @@ public class CircuitTest extends TestCase {
      * it is true for input (true, true).
      */
     public void testX1andX2() {
-        Circuit circuit = new Circuit("x1 x2 and");
+        Circuit circuit = CircuitFactory.create("x1 x2 and");
 
         circuit.setInputs(false, true);
         assertFalse(circuit.evaluate());
@@ -59,7 +60,7 @@ public class CircuitTest extends TestCase {
      * it is true for input (false, false, true).
      */
     public void testX1andX2orX3() {
-        Circuit circuit = new Circuit("x1 x2 and x3 or");
+        Circuit circuit = CircuitFactory.create("x1 x2 and x3 or");
 
         circuit.setInputs(false, true, false);
         assertFalse(circuit.evaluate());
@@ -73,7 +74,7 @@ public class CircuitTest extends TestCase {
      * verify that its result is true for all values of x1.
      */
     public void testAlwaysTrue() {
-        Circuit circuit = new Circuit("x1 x2 not or");
+        Circuit circuit = CircuitFactory.create("x1 x2 not or");
 
         circuit.setInputs(true, true);
         assertTrue(circuit.evaluate());

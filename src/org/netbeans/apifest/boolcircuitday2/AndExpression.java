@@ -1,7 +1,12 @@
 package org.netbeans.apifest.boolcircuitday2;
 
+import org.netbeans.apifest.boolcircuitday2.api.BooleanExpression;
+import org.netbeans.apifest.boolcircuitday2.api.DoubleExpression;
+
+import static org.netbeans.apifest.boolcircuitday2.api.ConvertUtils.toBoolean;
+
 /**
- * Created by John on 2014.12.07..
+ * Created by Mihails Volkovs on 2014.12.07..
  */
 class AndExpression implements BooleanExpression, DoubleExpression {
 
@@ -13,7 +18,7 @@ class AndExpression implements BooleanExpression, DoubleExpression {
 
     @Override
     public boolean evaluate() {
-        return DoubleInput.toBoolean(evaluateDouble());
+        return toBoolean(evaluateDouble());
     }
 
     @Override
@@ -23,5 +28,10 @@ class AndExpression implements BooleanExpression, DoubleExpression {
             result = result * argument.evaluateDouble();
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AND";
     }
 }

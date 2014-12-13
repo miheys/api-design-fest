@@ -2,7 +2,10 @@ package org.netbeans.apifest.booleval;
 
 
 import junit.framework.TestCase;
-import org.netbeans.apifest.boolcircuitday2.Circuit;
+import org.netbeans.apifest.boolcircuitday2.ExpressionFactories;
+import org.netbeans.apifest.boolcircuitday2.api.Circuit;
+import org.netbeans.apifest.boolcircuitday2.api.CircuitFactory;
+import org.netbeans.apifest.boolcircuitday2.custom.GteExpressionFactory;
 
 // BEGIN: apitest.day2.RealTest
 
@@ -59,7 +62,7 @@ public class RealTest extends TestCase {
      * throws an exception
      */
     public void testX1andX2orNotX1() {
-        Circuit circuit = new Circuit("x1 x2 and x1 not or");
+        Circuit circuit = CircuitFactory.create("x1 x2 and x1 not or");
 
         circuit.setInput("x1", true);
         circuit.setInput("x2", false);
@@ -95,7 +98,7 @@ public class RealTest extends TestCase {
      * thrown indicating that this is improper use of the circuit.
      */
     public void testImproperUseOfTheCircuit() {
-        Circuit circuit = new Circuit("x1 x1 and");
+        Circuit circuit = CircuitFactory.create("x1 x1 and");
         circuit.setInput("x1", 0.3);
         try {
             circuit.setInput("x1", 0.5);
@@ -120,9 +123,18 @@ public class RealTest extends TestCase {
      * Feed the same circuit with 0 and verify the result is 1
      */
     public void testGreaterThanEqualElement() {
-        fail("testGreaterThanEqualElement");
+        ExpressionFactories.registerCustom(new GteExpressionFactory());
+        Circuit circuit = CircuitFactory.create("x1 x1 not and x1 gte");
+
+        circuit.setInput("x1", 0.5);
+        assertEquals(0.0, circuit.evaluateDouble());
+
+        circuit.setInput("x1", 1);
+        assertEquals(0.0, circuit.evaluateDouble());
+
+        circuit.setInput("x1", 0);
+        assertEquals(1.0, circuit.evaluateDouble());
     }
 }
-// END: apitest.day2.RealTest
 
 

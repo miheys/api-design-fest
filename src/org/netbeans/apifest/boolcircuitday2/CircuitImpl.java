@@ -22,12 +22,17 @@ package org.netbeans.apifest.boolcircuitday2;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.netbeans.apifest.boolcircuitday2.api.Circuit;
+import org.netbeans.apifest.boolcircuitday2.api.DoubleExpression;
 
 import java.util.*;
 
+import static org.netbeans.apifest.boolcircuitday2.api.ConvertUtils.toBoolean;
+import static org.netbeans.apifest.boolcircuitday2.api.ConvertUtils.toDouble;
+
 /**
  */
-public final class Circuit {
+public final class CircuitImpl implements Circuit {
 
     private List<DoubleInput> inputs = Lists.newArrayList();
 
@@ -37,7 +42,7 @@ public final class Circuit {
 
     private DoubleExpression expression;
 
-    public Circuit(String expressionString) {
+    public CircuitImpl(String expressionString) {
         String[] atoms = expressionString.split("\\s");
         for (String atom : atoms) {
             DoubleExpression expression = DefaultExpressionFactory.create(atom, stack);
@@ -67,7 +72,7 @@ public final class Circuit {
     }
 
     public void setInput(String variableName, boolean value) {
-        setInput(variableName, value ? 1 : 0);
+        setInput(variableName, toDouble(value));
     }
 
     public void setInput(String variableName, double value) {
@@ -79,7 +84,7 @@ public final class Circuit {
     }
 
     public boolean evaluate() {
-        return DoubleInput.toBoolean(evaluateDouble());
+        return toBoolean(evaluateDouble());
     }
 
     public double evaluateDouble() {

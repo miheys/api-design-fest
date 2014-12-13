@@ -1,11 +1,14 @@
 package org.netbeans.apifest.boolcircuitday2;
 
+import org.netbeans.apifest.boolcircuitday2.api.DoubleExpression;
+import org.netbeans.apifest.boolcircuitday2.api.ExpressionFactory;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
 /**
- * Created by John on 2014.12.07..
+ * Created by Mihails Volkovs on 2014.12.07..
  */
 class DefaultExpressionFactory {
 
